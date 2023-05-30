@@ -41,8 +41,8 @@ jobs:
           VAR_LOKALISE_PROJECT_ID: ${{ vars.PROJECT_ID }}
           VAR_LOKALISE_PRODUCTION_TAG: ${{ vars.PRODUCTION_TAG }}
           VAR_LOKALISE_STAGING_TAG: ${{ vars.STAGING_TAG }}
-          ENV_LOKALISE_SOURCE_LANG_ISO: ${{ vars.SOURCE_LANG_ISO ))
-        run: |
+          ENV_LOKALISE_SOURCE_LANG_ISO: ${{ vars.SOURCE_LANG_ISO }}
+        run:
              while read file 
              do 
                 if [ -f $file ]
