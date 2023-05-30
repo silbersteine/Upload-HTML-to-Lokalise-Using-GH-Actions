@@ -36,6 +36,8 @@ jobs:
           VAR_LOKALISE_PROJECT_ID: ${{ vars.PROJECT_ID }}
           VAR_LOKALISE_PRODUCTION_TAG: ${{ vars.PRODUCTION_TAG }}
           ENV_LOKALISE_SOURCE_LANG_ISO: ${{ vars.SOURCE_LANG_ISO }}
+          GITHUB_PREVIOUS_COMMIT: ${{ github.event.after }}
+          GITHUB_CURRENT_COMMIT: ${{ github.event.before }}
         run:
              while read file 
              do 
@@ -43,4 +45,10 @@ jobs:
                 then
                  ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified --include-path  --tag-inserted-keys --tag-updated-keys --use-automations=true --poll-timeout 60s 
                 fi
-             done 
+             done  < <(
+             if [ -z ${{ env.GITHUB_CURRENT_COMMIT }} ]
+             then
+              git ls-files -- '**${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
+             else
+              git diff --name-only ${{ env.GITHUB_PREVIOUS_COMMIT }} ${{ env.GITHUB_CURRENT_COMMIT }} -- '**${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
+             fi | awk NF)
