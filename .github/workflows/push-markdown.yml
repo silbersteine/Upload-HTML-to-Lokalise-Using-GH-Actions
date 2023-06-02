@@ -5,6 +5,7 @@ run-name: Push [${{ github.ref_name }}] ${{ github.event.after }}
 
 # Controls when the workflow will run
 on:
+  workflow_dispatch:
   push:
     paths:
       - "public/**-en.{md, markdown}"
