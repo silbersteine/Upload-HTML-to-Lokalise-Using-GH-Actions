@@ -42,13 +42,13 @@ jobs:
                   then
                     ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --include-path --tags ${{ env.VAR_LOKALISE_STAGING_TAG }} --tag-skipped-keys --use-automations=false --poll-timeout 60s
                   else
-                    ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified --include-path --tags ${{ env.GITHUB_BRANCH_NAME }} --tag-inserted-keys --tag-updated-keys --use-automations=true --poll-timeout 60s
+                    ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified  --tag-inserted-keys --tag-updated-keys --use-automations=true --poll-timeout 60s
                   fi
                 fi
              done < <(
              if [ -z ${{ env.GITHUB_CURRENT_COMMIT }} ]
              then
-              git ls-files -- '**${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
+              git ls-files -- '**-${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
              else
-              git diff --name-only ${{ env.GITHUB_PREVIOUS_COMMIT }} ${{ env.GITHUB_CURRENT_COMMIT }} -- '**${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
+              git diff --name-only ${{ env.GITHUB_PREVIOUS_COMMIT }} ${{ env.GITHUB_CURRENT_COMMIT }} -- '**-${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
              fi | awk NF)
