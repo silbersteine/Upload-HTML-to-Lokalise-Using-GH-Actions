@@ -5,18 +5,28 @@ run-name: Push [${{ github.ref_name }}] ${{ github.event.after }}
 
 # Controls when the workflow will run
 on:
-  workflow_dispatch:
   push:
-    paths:
-      - "public/**-en.html"
+
 jobs:
   convert_via_pandoc:
     runs-on: ubuntu-22.04
     steps:
-      - name: get all changed files
+      - uses: actions/checkout@v3
+      - uses: jitterbit/get-changed-files@v1 
         id: files
-        uses: jitterbit/get-changed-files@v1 
-      - run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+        with: 
+          format: space-delimited
+      - name: Printing
+        run: |
+            echo "All:"
+            echo "${{ steps.abc.outputs.all }}"
+            echo "Added:"
+            echo "${{ steps.abc.outputs.added }}"
+            echo "Removed:"
+            echo "${{ steps.abc.outputs.removed }}"
+            echo "Renamed:"
+            echo "${{ steps.abc.outputs.renamed }}"
+            echo "Modified:"
+            echo "${{ steps.abc.outputs.modified }}"
+            echo "Added+Modified:"
+            echo "${{ steps.abc.outputs.added_modified }}"
