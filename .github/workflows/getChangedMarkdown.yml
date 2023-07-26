@@ -1,4 +1,4 @@
-name: List Changed Files
+name: List Changed Markdown Files
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
       - name: List changed markdown files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            if [[ $file == "Markdown/"* && $file == *.md ]]; then
+            if [[ $file == *.md ]]; then
               echo "$file was changed"
             fi
           done
