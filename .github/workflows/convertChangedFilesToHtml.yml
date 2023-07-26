@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Install Pandoc
         uses: docker://pandoc/core:2.9
-      - name: Convet Markdown to HTML
+      - name: Convert Markdown to HTML
         run: |
           for file in ${{ needs.changed_files.outputs.all_changed_files }}; do
             pandoc -f markdown -t html $file > $file.html
