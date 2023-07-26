@@ -31,5 +31,10 @@ jobs:
       - name: Convet Markdown to HTML
         run: |
           for file in ${{ needs.changed_files.outputs.all_changed_files }}; do
-            pandoc -f markdown -t html -s $file ${file%.md} > ${file%.md}.html
+            pandoc -f markdown -t html ${file%.md} > ${file%.md}.html
           done
+      - name: Upload HTML files
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML Files
+          path: ./html-files/
