@@ -10,7 +10,7 @@ on:
     branches: 
       - main
     paths:  #the paths filters the workflow to run only when changes occur in specific files or directories.
-      - "/htmlForTranslation/**.html"
+      - "htmlForTranslation/**.html"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,9 +18,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Lokalise CLI
+      - name: Install Lokalise CLI
         run: curl -sfL https://raw.githubusercontent.com/lokalise/lokalise-cli-2-go/master/install.sh | sh
-      - name: Push
+      - name: Push to Lokalise
         env:
           GITHUB_BRANCH_NAME: ${{ github.ref_name }}
           GITHUB_PREVIOUS_COMMIT: ${{ github.event.after }}
@@ -29,6 +29,9 @@ jobs:
           VAR_LOKALISE_PROJECT_ID: ${{ vars.PROJECT_ID }}
           ENV_LOKALISE_SOURCE_LANG_ISO: en
         run: |
+            uploaded_files=""
             for file in $(find ./htmlForTranslation -name '*.html'); do
                   ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified --include-path --use-automations=true --cleanup-mode --poll-timeout 120s
             done
+            echo "Uploaded files to Lokalise:"
+            echo -e "$uploaded_files"
