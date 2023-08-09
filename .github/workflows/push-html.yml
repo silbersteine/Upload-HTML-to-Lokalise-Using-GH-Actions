@@ -10,7 +10,7 @@ on:
     branches: 
       - main
     paths:  #the paths filters the workflow to run only when changes occur in specific files or directories.
-      - "htmlForTranslation/**.html"
+      - "/htmlForTranslation/**.html"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,21 +25,10 @@ jobs:
           GITHUB_BRANCH_NAME: ${{ github.ref_name }}
           GITHUB_PREVIOUS_COMMIT: ${{ github.event.after }}
           GITHUB_CURRENT_COMMIT: ${{ github.event.before }}
-          VAR_GITHUB_STAGING_BRANCH: ${{ vars.STAGING_BRANCH }} 
           VAR_LOKALISE_API_TOKEN: ${{ secrets.API_TOKEN }}
           VAR_LOKALISE_PROJECT_ID: ${{ vars.PROJECT_ID }}
           ENV_LOKALISE_SOURCE_LANG_ISO: en
         run: |
-             while read file 
-             do 
-                if [ -f $file ]
-                then
+            for file in $(find ./htmlForTranslation -name '*.html'); do
                   ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified --include-path --use-automations=true --cleanup-mode --poll-timeout 120s
-                fi
-             done < <(
-             if [ -z ${{ env.GITHUB_CURRENT_COMMIT }} ]
-             then
-              git ls-files -- '**${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
-             else
-              git diff --name-only ${{ env.GITHUB_PREVIOUS_COMMIT }} ${{ env.GITHUB_CURRENT_COMMIT }} -- '**${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }}.html'
-             fi | awk NF)
+            done
