@@ -7,6 +7,8 @@ run-name: Push [${{ github.ref_name }}] ${{ github.event.after }}
 on:
   workflow_dispatch:
   push:
+    branches: 
+      - main
     paths:  #the paths filters the workflow to run only when changes occur in specific files or directories.
       - "htmlForTranslation/**.html"
 jobs:
