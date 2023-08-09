@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     paths:  #the paths filters the workflow to run only when changes occur in specific files or directories.
-      - "public/**-en.html"
+      - "htmlForTranslation/**.html"
 jobs:
   build:
     runs-on: ubuntu-latest
