@@ -23,12 +23,9 @@ jobs:
           GITHUB_BRANCH_NAME: ${{ github.ref_name }}
           GITHUB_PREVIOUS_COMMIT: ${{ github.event.after }}
           GITHUB_CURRENT_COMMIT: ${{ github.event.before }}
-          VAR_GITHUB_PRODUCTION_BRANCH: ${{ vars.PRODUCTION_BRANCH }} 
           VAR_GITHUB_STAGING_BRANCH: ${{ vars.STAGING_BRANCH }} 
           VAR_LOKALISE_API_TOKEN: ${{ secrets.API_TOKEN }}
           VAR_LOKALISE_PROJECT_ID: ${{ vars.PROJECT_ID }}
-          VAR_LOKALISE_PRODUCTION_TAG: ${{ vars.PRODUCTION_TAG }}
-          VAR_LOKALISE_STAGING_TAG: ${{ vars.STAGING_TAG }}
           ENV_LOKALISE_SOURCE_LANG_ISO: en
         run: |
              while read file 
