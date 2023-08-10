@@ -1,5 +1,5 @@
 name: List Changed Files
-run-name: List updated HTML files in commit ${{ github.sha }} ${{ github.event.after }}
+run-name: List updated HTML files in commit ${{ github.event.head_commit.message }} ${{ github.event.after }}
 
 
 on:
