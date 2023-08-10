@@ -1,4 +1,6 @@
 name: List Changed Files
+run-name: List updated HTML files in commit ${{ github.sha }} ${{ github.event.after }}
+
 
 on:
   push:
