@@ -42,8 +42,12 @@ jobs:
         run: |
             uploaded_files=""
             for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-                  ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified --include-path --use-automations=true --cleanup-mode --poll-timeout 120s
-                  uploaded_files="${uploaded_files}${file}\n"
+              if [[ "$file" == *.html ]]; then
+                ./bin/lokalise2 --token ${{ env.VAR_LOKALISE_API_TOKEN }} --project-id ${{ env.VAR_LOKALISE_PROJECT_ID }} file upload --file="${file}" --lang-iso ${{ env.ENV_LOKALISE_SOURCE_LANG_ISO }} --replace-modified --include-path --use-automations=true --cleanup-mode --poll-timeout 120s
+                uploaded_files="${uploaded_files}${file}\n"
+              else
+                echo "Skipped non-HTML file: $file"
+              fi
             done
             echo "Uploaded files to Lokalise:"
             echo -e "$uploaded_files"
